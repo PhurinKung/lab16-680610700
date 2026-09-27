@@ -3,14 +3,15 @@ interface Student {
   firstName: string;
   lastName: string;
   program: "CPE" | "ISNE";
-  courses?: string[];
+  status?: "Active" | "Inactive";
+  enrolledCourses?: string[]; // รายชื่อวิชา เช่น ["CS101", "CS201"]
 }
 export type { Student };
 
 interface Course {
-  courseId: string;
+  courseCode: string;
   courseTitle: string;
-  instructors: string[];
+  instructors?: string[];
 }
 export type { Course };
 
