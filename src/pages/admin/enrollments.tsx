@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import { useEnrollmentStore } from "@/lib/enrollment-store";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -34,13 +34,14 @@ import {
   ComboboxChips,
   ComboboxChipsInput,
   ComboboxContent,
-  ComboboxEmpty,
+  // ComboboxEmpty,
   ComboboxItem,
   ComboboxList,
   ComboboxValue,
   useComboboxAnchor,
 } from "@/components/ui/combobox"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge"
 
 type Option = { value: string; label: string };
 
@@ -78,7 +79,7 @@ function OptionSelect({
 }
 
 export default function AdminEnrollmentsPage() {
-  const { students, courses, enroll } = useEnrollmentStore();
+  const { students, courses, enroll, removeStudent } = useEnrollmentStore();
 
   const [formStudents, setFormStudents] = useState<string[]>([]);
   const [formCourse, setFormCourse] = useState<string | null>(null);
@@ -145,6 +146,19 @@ export default function AdminEnrollmentsPage() {
     courses.find((c) => c.courseCode === courseId)?.courseTitle ?? "-";
 
   const anchor = useComboboxAnchor()
+
+  // type datatable
+  // const enrollments: = students.map( (s) =>
+
+  // )
+  const visibleCourses = courses.filter((c) => {
+    if (mode === "course") {
+      return filterCourse === "all" || c.courseCode === filterCourse;
+    }
+    if (filterStudent === "all") return true;
+    const student = students.find((s) => s.studentId === filterStudent);
+    return student?.enrolledCourses?.includes(c.courseCode) ?? false;
+  });
   return (
     <div className="space-y-4">
       <div>
@@ -320,7 +334,7 @@ export default function AdminEnrollmentsPage() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {rows.length === 0 && (
+            {availableCourseOptions.length === 0 && (
               <TableRow>
                 <TableCell
                   colSpan={4}
@@ -338,37 +352,46 @@ export default function AdminEnrollmentsPage() {
                 <TableCell>{titleOf(s.courseId)}</TableCell>
               </TableRow>
             ))} */}
-            {mode === "course" &&
-              courses
-                .filter((c) => filterCourse === "all" || c.courseCode === filterCourse)
-                .map((course) => {
-                  const enrolledStudents = students.filter((s) =>
-                    s.enrolledCourses?.includes(course.courseCode)
-                  );
-                  return (
-                    <TableRow key={course.courseCode}>
-                      <TableCell className="font-medium">{course.courseCode}</TableCell>
-                      <TableCell>{course.courseTitle}</TableCell>
-                      <TableCell>{enrolledStudents.length}</TableCell>
-                      <TableCell>
-                        <div className="flex flex-wrap gap-1">
-                          {enrolledStudents.length > 0 ? (
-                            enrolledStudents.map((s) => (
-                              <span
-                                key={s.studentId}
-                                className="inline-flex items-center rounded-md bg-muted px-2 py-1 text-xs font-medium"
+            {
+              visibleCourses.map((c) => {
+              const enrolledStudents = students.filter((s) =>
+                s.enrolledCourses?.includes(c.courseCode),
+              );
+              return (
+                <TableRow key={c.courseCode}>
+                  <TableCell>{c.courseCode}</TableCell>
+                  <TableCell>{c.courseTitle}</TableCell>
+                  <TableCell>{enrolledStudents.length}</TableCell>
+                  <TableCell>
+                    {enrolledStudents.length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {enrolledStudents.map((s) => (
+                          <div className="flex flex-wrap gap-1.5">
+                            <Badge
+                              key={s.studentId}
+                              variant="outline"
+                              className="gap-1 bg-blue-50 text-blue-700 hover:bg-blue-100 dark:border-blue-900 dark:bg-blue-950 dark:text-blue-300"
+                            >
+                              {s.firstName} {s.lastName}
+                              <Button
+                                size="xs"
+                                variant="ghost"
+                                className="rounded-full p-0.5 hover:bg-blue-800/60"
+                                onClick={() => removeStudent(s.studentId)}
                               >
-                                {s.firstName} {s.lastName}
-                              </span>
-                            ))
-                          ) : (
-                            <span className="text-muted-foreground">-</span>
-                          )}
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                                <X className="h-3 w-3" />
+                              </Button>
+                            </Badge>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <span className="text-muted-foreground">ยังไม่มีนักศึกษาลงทะเบียน</span>
+                    )}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </div>

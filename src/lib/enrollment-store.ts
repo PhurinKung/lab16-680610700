@@ -21,6 +21,7 @@ type EnrollmentStore = {
   removeStudent: (studentId: string) => void;
   /** ลบวิชาออกจากรายวิชาที่เปิดสอน พร้อม cascade ลบ enrollment ที่อ้างถึงวิชานั้นทั้งหมด */
   removeCourse: (courseId: string) => void;
+  addCourse: (course: Course) => void;
   addProf: (ProfName: string, courseId: string) => void;
   removeProf: (ProfName: string, courseId: string) => void;
 };
@@ -82,6 +83,11 @@ export const useEnrollmentStore = create<EnrollmentStore>()(
         // enrollments: state.enrollments.filter((e) => e.courseId !== courseId),
       })),
 
+    addCourse: (course) =>
+      set((state) => ({
+        courses: [...state.courses, course],
+    })),
+        
     addProf: (ProfName, courseId) =>
       set((state) => ({
         courses: state.courses.map(

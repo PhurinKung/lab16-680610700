@@ -3,7 +3,7 @@ interface Student {
   firstName: string;
   lastName: string;
   program: "CPE" | "ISNE";
-  status?: "Active" | "Inactive";
+  status: "Active" | "Inactive";
   enrolledCourses?: string[]; // รายชื่อวิชา เช่น ["CS101", "CS201"]
 }
 export type { Student };
