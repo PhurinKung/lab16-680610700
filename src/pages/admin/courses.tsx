@@ -192,7 +192,7 @@ export default function AdminCoursesPage(){
                                     </ComboboxItem>
                                 )}
                             </ComboboxList>
-                            {allProf.find((p) => p === formnewProf) === undefined && (
+                            {allProf.find((p) => p === formnewProf) === undefined && formnewProf!=="" &&(
                                 <Button onClick={handleAddNewProf} variant="ghost" className="justify-start min-w-0 w-full">+ เพิ่มผู้สอน "{formnewProf}"</Button>
                             )}
                             
