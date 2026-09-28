@@ -5,7 +5,6 @@ import {
   students as initialStudents,
   courses as initialCourses,
   // enrollments as initialEnrollments,
-  enrollments,
 } from "@/lib/mock-data";
 import type { Course, Student } from "@/lib/types";
 

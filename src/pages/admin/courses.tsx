@@ -1,7 +1,7 @@
 import { useState } from "react";
 import * as React from "react";
 import { useEnrollmentStore } from "@/lib/enrollment-store";
-import { Bluetooth, PlusCircle, X } from "lucide-react";
+import { PlusCircle, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -99,9 +99,6 @@ export default function AdminCoursesPage(){
         setformCourseProf((prev) => [...prev, newProf]);
         setformnewProf("");
    };
-   const hadnleAddProf = () => {
-
-   }
 
     return(
         <div className="space-y-4">

@@ -132,18 +132,18 @@ export default function AdminEnrollmentsPage() {
     }
   };
 
-  const rows = students.filter((s) =>
-    mode === "course"
-      ? filterCourse === "all" || s.enrolledCourses?.includes(filterCourse)
-      : filterStudent === "all" || s.studentId === filterStudent
-  );
+  // const rows = students.filter((s) =>
+  //   mode === "course"
+  //     ? filterCourse === "all" || s.enrolledCourses?.includes(filterCourse)
+  //     : filterStudent === "all" || s.studentId === filterStudent
+  // );
 
-  const nameOf = (studentId: string) => {
-    const s = students.find((x) => x.studentId === studentId);
-    return s ? `${s.firstName} ${s.lastName}` : "-";
-  };
-  const titleOf = (courseId: string) =>
-    courses.find((c) => c.courseCode === courseId)?.courseTitle ?? "-";
+  // const nameOf = (studentId: string) => {
+  //   const s = students.find((x) => x.studentId === studentId);
+  //   return s ? `${s.firstName} ${s.lastName}` : "-";
+  // };
+  // const titleOf = (courseId: string) =>
+  //   courses.find((c) => c.courseCode === courseId)?.courseTitle ?? "-";
 
   const anchor = useComboboxAnchor()
 
